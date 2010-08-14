@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8"/>
+    <title>FoTweet</title>
+    <link src="master.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="content">
+      <div id="title">
+        <h3>What's up?</h3>
+        <span id="charsLeft">140</span>
+      </div>
+      <div id="update">
+        <form id="newTweet" method="post">
+          <textarea id="tweetText" cols="100"></textarea>
+          <input id="tweet" type="submit" value="Update" />
+        </form>
+      </div>
+      <div id="feed">
+        <div id="tweets">
+        </div>
+      </div>
+    </div>
+    <script src="http://www.google.com/jsapi"></script>
+    <script> google.load('jquery','1'); </script>
+    <script src="master.js"></script>
+  </body>
+</html>
