@@ -19,8 +19,8 @@
 
 		//send a message to the server on every iFrame load
 		this.iFrame.onload = function(){
-			//store the host of the iframe so we aren't posting messages to the wrong site.
-			self.host = this.ownerDocument.location.host;
+			//store the host of the iframe so we aren't posting messages to the wrong site.            
+			self.host = this.ownerDocument.location.protocol + "//" + this.ownerDocument.location.host;
 			self.sendMessage('discover');
 		};
 		return this;
@@ -28,6 +28,7 @@
 	//: sendMessage
 	//  @options #optional
 	ArcClient.prototype.sendMessage = function(call, callback, params){
+        console.log("call:"+call+" host:"+this.host);
 		if(callback){ 
 			var id = Math.floor(Math.random()*100000+(new Date().getTime()));
 			window.addEventListener('message', function(e){
@@ -35,7 +36,7 @@
 			}, false);
 		}
 		var data = {'call': call,'id':id};
-		if(params) data.params = params;
+		if(params) data.params = params;        
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
 	};
 	window.ArcClient = ArcClient;
