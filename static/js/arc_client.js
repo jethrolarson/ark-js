@@ -21,10 +21,10 @@
 		this.iFrame.contentWindow.addEventListener("onload",function(){
 			self.sendMessage('initialize');
 		},false);
-
+		//console.log(this.iFrame.contentWindow);
 		//store the host of the iframe so we aren't posting messages to the wrong site.
 		this.host = this.iFrame.src.match(/:\/\/([^\/\?#]+)/)[1];
-
+		
 		return this;
 	};
 	//: sendMessage
