@@ -7,9 +7,9 @@
 		set: function(k, v){
 			return localStorage[k] = JSON.stringify(v);
 		}
-	}
+	};
 
-	if(window.top === window) return;
+	if(window.top === window){ return;}
 	
 	var ArcServer = function(){
 		var self = this;
@@ -22,19 +22,19 @@
 				self.origin = e.origin;
 			}
 			self.id = e.data.id;
-			if(e.data.call === 'initialize') self.checkQueue();  //if yo check localStorage for pending messages
+			if(e.data.call === 'initialize'){ self.checkQueue();}  //if yo check localStorage for pending messages
 			alert('message: ' + e.data.call);
 		},false);   
-	}
+	};
 	
 	ArcServer.prototype.checkQueue = function(){
 		var allMessages = storage.get('ArcMessages'); 
 		this.queuedMessages = allMessages[this.origin];  //only get messages from queue that match the domain of the client
-	}
+	};
 	
 	ArcServer.prototype.respond = function(call, id, data){	
-		this.client.postMessage(JSON.stringify({call:call, id:id, data:data}))  //respond with call, id and any described data
-	}
+		this.client.postMessage(JSON.stringify({call:call, id:id, data:data}));  //respond with call, id and any described data
+	};
 	
 	window.ArcServer = ArcServer;
 })(window,document);
