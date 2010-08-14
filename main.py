@@ -33,11 +33,8 @@ _DEBUG = True
 
 
 class MainHandler(webapp.RequestHandler):
-
   def get(self):
-    directory = os.path.dirname(__file__)
-    path = os.path.join(directory, os.path.join('templates', "index.html"))
-    self.response.out.write(template.render(path, "", debug=_DEBUG))
+    self.redirect("/static/index.html")
 
 
 def main():
