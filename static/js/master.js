@@ -15,8 +15,6 @@ var ArkClient = function(options){
 };
 ArkClient.prototype.sendMessage = function(call, options, callback){
 
-
-
 };
 
 var client = new ArkClient({iframe:'clientPage1'});
