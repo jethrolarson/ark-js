@@ -18,6 +18,7 @@
 		this.policies = policies;
 		this.policies.discover = discoverPolicy;
 		window.addEventListener('message', function(e){
+            console.log("msg recieved");
 			if(self.client === undefined){  //if client window isn't stored store it
 				self.client = e.source;
 				self.origin = e.origin;
