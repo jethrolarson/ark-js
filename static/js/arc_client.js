@@ -18,13 +18,11 @@
 		document.body.appendChild(this.iFrame);
 
 		//send a message to the server on every iFrame load
-		this.iFrame.contentWindow.addEventListener("onload",function(){
-			self.sendMessage('initialize');
-		},false);
-		//console.log(this.iFrame.contentWindow);
-		//store the host of the iframe so we aren't posting messages to the wrong site.
-		this.host = this.iFrame.src.match(/:\/\/([^\/\?#]+)/)[1];
-		
+		this.iFrame.onload = function(){
+			//store the host of the iframe so we aren't posting messages to the wrong site.
+			self.host = this.ownerDocument.location.host;
+			self.sendMessage('discover');
+		};
 		return this;
 	};
 	//: sendMessage
