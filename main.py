@@ -34,7 +34,7 @@ _DEBUG = True
 
 class MainHandler(webapp.RequestHandler):
   def get(self):
-    self.redirect("/static/index.html")
+    self.redirect("/static/client.html")
 
 
 def main():
