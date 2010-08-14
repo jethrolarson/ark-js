@@ -23,7 +23,7 @@
 				self.origin = e.origin;
 			}
 			self.id = e.data.id;
-			if(e.data.call === 'discover'){self.checkQueue();}  //if yo check localStorage for pending messages
+			if(e.data.call === 'discover'){self.checkQueue();}
 			if(self.policies[e.data.callName]){
 				self.policies[e.data.callName].call(self, e);
 				self.checkQueue();
@@ -33,27 +33,34 @@
 	
 	ArcServer.prototype.checkQueue = function(){
 		var allMessages = storage.get('ArcMessages'); 
-		this.queuedMessages = allMessages[this.origin];  //only get messages from queue that match the domain of the client
+		//only get messages from queue that match the domain of the client
+		this.queuedMessages = allMessages[this.origin];  
 		for(var i=0, len = this.queuedMessages.length; i<len; i++){
 			var qm = this.queuedMessages[i];
-			this.respond(qm.callName, qm.id, qm.message);
+			if(qm.fn){
+				this.respond(qm.callName, qm.id, qm.fn.call(this,e));
+			}else{
+				this.respond(qm.callName, qm.id, qm.message);
+			}
 		}
 	};
 	
 	ArcServer.prototype.respond = function(e, message){	
-		this.client.postMessage(JSON.stringify({callName:e.callName, id: e.id, message:message}));  //respond with call, id and any described data
+		//respond with call, id and any described data
+		this.client.postMessage(JSON.stringify({callName: e.callName, id: e.id, message: message}));  
 	};
+	
 	ArcServer.prototype.addMessage = function(e,message){
 		var o = storage.get('ArcMessages');
 		o[e.origin].push({id: e.id, callName: e.callName, message: message });
 		storage.set('ArcMessages', o);
-		this.checkQueue();
+		this.checkQueue(e);
 	};
 	ArcServer.prototype.addFunction = function(e,fn){
 		var o = storage.get('ArcMessages');
 		o[e.origin].push({id: e.id, callName: e.callName, fn: fn });
 		storage.set('ArcMessages', o);
-		this.checkQueue();
+		this.checkQueue(e);
 	};
 	
 	window.ArcServer = ArcServer;
