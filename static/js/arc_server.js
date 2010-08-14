@@ -22,7 +22,7 @@
 				self.origin = e.origin;
 			}
 			self.id = e.data.id;
-			if(e.data.call === 'initialize'){ self.checkQueue();}  //if yo check localStorage for pending messages
+			if(e.data.call === 'initialize'){self.checkQueue();}  //if yo check localStorage for pending messages
 			alert('message: ' + e.data.call);
 		},false);   
 	};
