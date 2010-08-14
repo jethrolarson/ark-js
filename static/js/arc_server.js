@@ -34,7 +34,7 @@
 	ArcServer.prototype.checkQueue = function(){
 		var allMessages = storage.get('ArcMessages'); 
 		this.queuedMessages = allMessages[this.origin];  //only get messages from queue that match the domain of the client
-		for(var i = 0, len = this.queuedMessages.length; i<len; i++){
+		for(var i=0, len = this.queuedMessages.length; i<len; i++){
 			var qm = this.queuedMessages[i];
 			this.respond(qm.callName, qm.id, qm.message);
 		}
@@ -44,10 +44,16 @@
 		this.client.postMessage(JSON.stringify({callName:e.callName, id: e.id, message:message}));  //respond with call, id and any described data
 	};
 	ArcServer.prototype.addMessage = function(e,message){
-		
+		var o = storage.get('ArcMessages');
+		o[e.origin].push({id: e.id, callName: e.callName, message: message });
+		storage.set('ArcMessages', o);
+		this.checkQueue();
 	};
-	ArcServer.prototype.addFunction = function(e,message){
-		
+	ArcServer.prototype.addFunction = function(e,fn){
+		var o = storage.get('ArcMessages');
+		o[e.origin].push({id: e.id, callName: e.callName, fn: fn });
+		storage.set('ArcMessages', o);
+		this.checkQueue();
 	};
 	
 	window.ArcServer = ArcServer;
