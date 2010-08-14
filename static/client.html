@@ -9,11 +9,9 @@
     
     <script src="/static/js/arc_client.js"></script>
     <script>
-      var client = new ArcClient("/static/server.html");
-
-      client.sendMessage('test',{},function(data){
-        console.log(data);
-      });
+      var client = new ArcClient("http://localhost:8081/static/server.html");
+            
+      
     </script>
   </body>
 </html>
