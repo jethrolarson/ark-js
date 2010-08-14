@@ -32,11 +32,11 @@
 	ArcClient.prototype.sendMessage = function(call, callback, params){
 		if(callback){ 
 			var id = Math.floor(Math.random()*100000+(new Date().getTime()));
-			window.addEventListener("message", function(e){
+			window.addEventListener('message', function(e){
 				e.data.id === id && callback.call(this,e);
 			}, false);
 		}
-		var data = {"call": call,'id':id};
+		var data = {'call': call,'id':id};
 		if(params) data.params = params;
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
 	};
