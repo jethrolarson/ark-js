@@ -12,18 +12,19 @@
 	if(window.top === window) return;
 	
 	var ArcServer = function(){
+		var self = this;
 		this.client = undefined;
 		this.id = undefined;
-		var self = this;
-		window.addEventListener("message",function(e){
+		
+		window.addEventListener('message', function(e){
 			if(self.client === undefined){  //if client window isn't stored store it
 				self.client = e.source;
 				self.origin = e.origin;
 			}
 			self.id = e.data.id;
-			if(e.data.call ==="yo") self.checkQueue();  //if yo check localStorage for pending messages
-			alert("message: "+e.data.call);
-		},false);        
+			if(e.data.call === 'initialize') self.checkQueue();  //if yo check localStorage for pending messages
+			alert('message: ' + e.data.call);
+		},false);   
 	}
 	
 	ArcServer.prototype.checkQueue = function(){
