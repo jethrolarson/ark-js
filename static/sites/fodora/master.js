@@ -1,32 +1,68 @@
 $(function(){
 	var tracks = $('audio');
-	var i = 0;
+	var trackIndex = 0;
 	var len = tracks.length;
 
-
+	var ffButton = $('#fastforward');
+	var rwButton = $('#rewind');
+	var pButton = $('#play');
+	
 	$('#rewind, #fastforward').click(function(){
-		if(!tracks[i].paused) tracks[i].pause();
-		tracks[i].currentTime = 0;
+		if(!tracks[trackIndex].paused) tracks[trackIndex].pause();
+		tracks[trackIndex].currentTime = 0;
 		if(this.id === 'rewind')
-			if(i === 0) i = len-1;
-			else i--;
+			if(trackIndex === 0) trackIndex = len-1;
+			else trackIndex--;
 		else
-			if(i === len-1) i = 0;
-			else i++;
-		tracks[i].currentTime = 0;
-		tracks[i].play();
+			if(trackIndex === len-1) trackIndex = 0;
+			else trackIndex++;
+		tracks[trackIndex].currentTime = 0;
+		tracks[trackIndex].play();
+		pButton.val('Pause');
 	});
 
-	$('#play').click(function(){
-		if(tracks[i].paused) tracks[i].play();
-		else tracks[i].pause();
+	pButton.click(function(){
+		if(tracks[trackIndex].paused) {
+			tracks[trackIndex].play();
+			pButton.val('Pause');
+		} else {
+			tracks[trackIndex].pause();
+			pButton.val('Play');
+		}
 	});
 
 	$('body').bind('ended', function(){
-		tracks[i].currentTime = 0;
-		tracks[i].pause();
-		i++;
-		if(i === len) i = 0;
-		tracks[i].play();
+		tracks[trackIndex].currentTime = 0;
+		tracks[trackIndex].pause();
+		trackIndex++;
+		if(trackIndex === len) trackIndex = 0;
+		tracks[trackIndex].play();
+	});
+	
+	new ArcServer({
+		'fastforward': {
+			callName: 'fastforward',
+			callback: function(e) {
+				self = this;
+				ffButton.click();
+				self.sendMessage(e, $('#playlist li')[trackIndex].text());
+			}
+		},
+		'rewind':{
+			callName: 'rewind',
+			callback: function(e) {
+				self = this;
+				rwButton.click();
+				self.sendMessage(e, $('#playlist li')[trackIndex].text());
+			}
+		},
+		'playpause':{
+			callName:'playpause',
+			callback: function(e) {
+				pButton.click();
+				var trackName = $('#playlist li')[trackIndex].text();
+				self.sendMessage(e, (pButton.val() == 'Play' ? 'Paused' : 'Playing') + ' ' + trackName);
+			}
+		}
 	});
 });
