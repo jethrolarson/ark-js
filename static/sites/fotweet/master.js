@@ -3,8 +3,8 @@ $(function(){
 	tweets = $('#tweets');
 	feed = $('#feed');
 
-	names = ["bob123", "monktacular", "bobbytables", "ManWithHat"];
-	messages = ["We should totally add more text", "I agree. It would make it less stale", "Yeah, I'm said that twice already","I love app engine", "Going to the hockey game.", "I'm drunk", "Oh man me too", "Has anyone seen Inception?", "This isn't my status"];
+	names = ["bob123", "monktacular", "bobbytables", "ManWithHat", "gtugger"];
+	messages = ["We should totally add more text #gtugcampout", "I agree. It would make it less stale #gtugcampout", "Yeah, I'm said that twice already #gtugcampout","I love app engine #gtugcampout", "Going to the hockey game.", "I'm drunk #gtugcampout", "Oh man me too", "Has anyone seen Inception?", "This isn't my status"];
 
 	$('#newTweet').submit(function(){
 		appendTweet('@Me '+tweetText.val());
@@ -22,7 +22,6 @@ $(function(){
 		setTimeout(createTweet, Math.floor(Math.random() * 7000 + 3000));
 	}
 	setTimeout(createTweet, 500);
-
 
 	new ArcServer({
 		'subscribePosts':{

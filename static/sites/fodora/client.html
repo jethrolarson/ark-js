@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Parent Page</title>
+	</head>
+	<body>
+		<h2 id="pageName">Parent page</h2>
+		<ol id="actions"></ol>
+		<script src="/static/js/arc_client.js"></script>
+		<script src="http://www.google.com/jsapi"></script>
+		<script> google.load('jquery', '1'); </script>
+		<script>
+			var client = new ArcClient("index.html");
+
+			$(function(){
+				var prevKey = -1;
+				var keyTimeout = 600;
+				var keyTimer;
+
+				var actionList = $('#actions');
+
+				client.sendMessage('subscribePlay', {}, addAction);
+
+				$(document).keyup(function (e) {
+					if(e.target.tagName !== 'textarea' && e.target.tagName !== 'input') {
+						if(e.which === 70 || e.which === 80 || e.which === 82) {
+							if(e.which === prevKey) {
+								var message = 'playpause';
+								switch(e.which) {
+									case 70: //FF
+										message = 'fastforward';
+										break;
+									case 82: //RR
+										message = 'rewind';
+										break;
+								}
+								client.sendMessage(message, {}, addAction);
+							} else {
+								prevKey = e.which;
+								setTimeout(clearKey, keyTimeout);
+							}
+						}
+					}
+				});
+
+				function addAction(data) {
+					console.log('Action: '+data)
+					if(data.message !== '') actionList.html('<li class="action">'+data.message+'</li>'+actionList.html());
+				}
+				function clearKey() {
+					prevKey = -1;
+				}
+			});
+
+/*			client.sendMessage('subscribePosts', {}, function(data){
+				document.getElementById('tweets').innerHTML = data.message;
+				console.log(data)
+			});
+*/
+		</script>
+	</body>
+</html>
