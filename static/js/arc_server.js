@@ -129,7 +129,7 @@
 					complete = false;
 
 				if (!request) return self.sendMessage(options, 'No request object found');
-				console.log(options);
+				
 				options.method = options.method.toUpperCase();
 
 				try {
