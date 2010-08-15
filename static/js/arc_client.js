@@ -38,31 +38,33 @@
 	//  @options #optional
 	ArcClient.prototype.sendMessage = function(call, callbackF, params){
         if(!this.frameLoaded){            
-            console.log("frame not loaded.. Queing " + call);
+            //console.log("frame not loaded.. Queing " + call);
             this.queue.push( { call:call, callback:callbackF, params:params } );
             return;
         }
         if(this.queue.length > 0){
-            console.log("sending queued messages");
+            //console.log("sending queued messages");
             var msgParams = this.queue.pop();
             this.sendMessage(msgParams.call, msgParams.callback, msgParams.params);
         }
-        console.log("call:"+call+" host:"+this.host);
+        
+        //console.log("call:"+call+" host:"+this.host);
         
         var id = Math.floor(Math.random()*100000+(new Date().getTime()));
-		
-        this.requests[data.callbackId] = callbackF || function(){};		
-            
-		var data = {'call': call,'id':id, callbackId:call + "-" + id };
         
-		if(params) data.params = params;        
+		var data = {'call': call,'id':id, 'data':params, callbackId:call + "-" + id };
+        
+        this.requests[data.callbackId] = callbackF || function(){};		
+		
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
 	};
+	
     ArcClient.prototype.receiveMessage = function(event){
         if (event.origin !== this.host) { return; }
             
         this.requests[event.data.callbackId]();  
-        
+		delete this.requests[event.data.callbackId];
+		
     };
     
 	window.ArcClient = ArcClient;
