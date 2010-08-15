@@ -20,34 +20,33 @@
 		document.body.appendChild(this.iFrame);
 		
 		this.iFrame.onload = function(){  //store the host of the iframe so we aren't posting messages to the wrong site.
-			//console.log("iframe loaded");
             self.frameLoaded = true;
 			self.host = this.ownerDocument.location.protocol + "//" + this.ownerDocument.location.host;
 			window.addEventListener("message", this.receiveMessage, false);	 
 			self.sendMessage('discover');
 		};
 		this.iFrame.unload = function(){
-			console.log("iframe unloaded wtf");
+			
 			self.frameLoaded = false;			 
 		};
 		return this;
 	};
 
-	ArcClient.prototype.sendMessage = function(call, params, callback){
-        if(!this.frameLoaded){  //console.log("frame not loaded.. Queing " + call);         
-            this.queue.push({ 'call': call, 'params' :params, 'callback': callback });
+	ArcClient.prototype.sendMessage = function(callName, params, callback){
+        if(!this.frameLoaded){  
+            this.queue.push({ 'callName': callName, 'params' :params, 'callback': callback });
             return;
         }
-        if(this.queue.length > 0){  //console.log("sending queued messages");
+        if(this.queue.length > 0){ 
             var msgParams = this.queue.pop();
-            this.sendMessage(msgParams.call, msgParams.params, msgParams.callback);
+            this.sendMessage(msgParams.callName, msgParams.params, msgParams.callback);
         }
         
-        //console.log("call:"+call+" host:"+this.host);
+
         
         var id = Math.floor(Math.random()*100000+(new Date().getTime()));
         
-		var data = {'call': call,'id': id, 'data': params, callbackId: call + "-" + id };
+		var data = {'callName': callName,'id': id, 'data': params, callbackId: callName + "-" + id };
         
         this.requests[data.callbackId] = callback || function(){};		
 		
