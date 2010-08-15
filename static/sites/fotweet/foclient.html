@@ -9,13 +9,13 @@
     
     <script src="/static/js/arc_client.js"></script>
     <script>
-      var client = new ArcClient("/static/server.html");
+      var client = new ArcClient("index.html");
             
-       client.sendMessage('getPosts',function(data){
+       client.sendMessage('getPosts',{},function(data){
        
-        alert("message sent back from server" + data);
+        alert("message sent back from server:" + data);
        
-       },null);
+       });
       
     </script>
   </body>
