@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8"/>
-    <title>Parent Page</title>
-  </head>
-  <body>
-    <h2 id="pageName">Parent page</h2>
-    
-    <script src="/static/js/arc_client.js"></script>
-    <script>
-      var client = new ArcClient("/static/server.html");
-            
-       client.sendMessage('getPosts',function(data){
-       
-        alert("message sent back from server" + data);
-       
-       },null);
-      
-    </script>
-  </body>
+	<head>
+		<meta charset="utf-8"/>
+		<title>arc.js - Instant API</title>
+		<link rel="stylesheet" href="application.css" />
+	</head>
+	<body>
+		<div id="page">
+			<header>
+				<h1 id="pageName">arc.js - Instant API</h1>
+			</header>
+			<div id="body">
+				<div id="sidebar">
+					<aside id="tweetStream">
+						<h2>Tweet Stream</h2>
+						<nav>
+							<ul id="tweets"></ul>
+						</nav>
+					</aside>
+					<aside id="blog">
+						<h2>My Blog RSS</h2>
+						<nav><ul id="blogPosts"></ul></nav>
+					</aside>
+				</div>
+			</div>
+			<footer>
+				<address>
+					Created for gtug campout 2010 by 
+					Dan Buchner,
+					<a href="http://twitter.com/bradonweb">Brad Boswell</a>,
+					<a href="http://jethrolarson.github.com">Jethro Larson</a>,
+					Arron Schaar
+				</address>
+			</footer>
+		</div>
+	</body>
+	<script src="http://www.google.com/jsapi"></script>
+	<script> google.load('jquery','1'); </script>
+	<script src="/static/js/arc_client.js"></script>
+	<script src="/static/js/jquery.gritter.min.js"></script>
+	<script src="/static/js/client.js"></script>
 </html>
