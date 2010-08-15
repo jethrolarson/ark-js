@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Ad Server</title>    
+	<script src="http://www.google.com/jsapi"></script>  
+	<script> google.load('mootools','1.2.4'); </script>		
+	<script src="../../js/arc_server.js"></script>
+	<script type="text/javascript">
+	
+		window.onload = function(){
+		
+		var adId = 0;
+		var ads = [
+				{ adName:'RootThis', adText:"<a href=''>Learn to root your android phone</a>",keywords:['android','phone']},
+				{ adName:'FarmVille', adText:"<a href=''>Farmville</a> for android, is this the end?",keywords:['android','game','farmville']},
+				{ adName:'Leica', adText:"Looking for a new camera? Try a <a href=''>Leica</a>",keywords:['leica','photography']},
+				{ adName:'Picasa', adText:"Get Free image hosting with <a href=''>Picasa</a>",keywords:['photography','picasa']}
+				];
+				
+		var ad = document.getElementById("adSpace");
+		//ad.innerHTML = ads[adId].adText;
+		
+		var callIt = null;
+		var index = -1;
+		var clients = {};
+					
+		new ArcServer({  
+			'nextAd':{				
+				onMessage: function(e){
+					adId++;
+					if(adId >= ads.length) adId = 0;					
+					var ad = document.getElementById("adSpace");
+					ad.innerHTML = ads[adId].adText;
+				}
+			},
+			'showRelatedAds':{				
+				onMessage: function(e,data){
+										
+					var selectedAds = [];
+					var keys = data.data.keywords.split(',');
+					var foundKeyword = false;
+					
+					for(var k = 0; k < ads.length;  k++){
+						for(var r = 0; r < ads[k].keywords.length; r++){	
+							for(var i = 0; i < keys.length; i++){							
+								//console.log(ads[k].adName + " " + i + " "+ k +" " + r + " " + ads[k].keywords[r].trim() + " , " + keys[i].trim());
+								if(ads[k].keywords[r].trim() == keys[i].trim()){									
+									selectedAds.push(ads[k]);									
+									break;
+								}	
+							}							
+						}
+					}
+					
+					index = 0;
+					$clear(callIt);
+					
+					callIt = function(e,list){
+						if(index >= list.length) index = 0;						
+						$('adSpace').innerHTML = list[index].adText;
+						index++;
+						
+					};
+					
+					var args = [e,selectedAds];
+					callIt = callIt.periodical(1800,null, args);
+					callIt.run(args);
+				}
+			}			
+			});
+		
+		}
+	
+	</script>
+  </head>
+  <body>
+    <div id="content">
+      <div id="title">
+        <h5>Controllable Ad Server</h5>        
+      </div>      
+	  <div id="adSpace"></div>
+    </div>
+  </body>
+</html>

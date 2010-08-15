@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Ad Server</title>    
+	<script src="http://www.google.com/jsapi"></script>  
+	<script> google.load('mootools','1.2.4'); </script>	
+	<script src="../../js/arc_client.js"></script>
+	<script type="text/javascript">
+		
+		
+		var client = null;
+		window.onload = function(){
+			
+			
+			
+			client = new ArcClient("index.html");
+			client.iFrame.style.cssText = "float:right";	
+			$(client.iFrame).inject($('title'));
+			
+			
+			$('content').getElements('.users').addEvent('click', function(){
+				$('content').getElements('.article').setStyle('display','none');
+				this.getElement('.article').setStyle('display','block');
+				var keywords = this.getElement('small').innerHTML;
+				client.sendMessage('showRelatedAds',{keywords:keywords});				
+			});
+			
+		}
+		
+		
+	
+	</script>
+	<style type="text/css">
+		.article{
+			width:400px;
+		}
+	</style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="title">
+        <h2>Ad Controller Demo</h2>  
+			<button onclick="client.sendMessage('nextAd');">Next Ad</button>
+		</div>  
+		
+		<h4></h4>
+		<div class="users">
+		<h3>Oracle sues Google over Android operating system</h3>
+			<div class="article" style="display:none;">
+				<p>
+				
+				Setting the stage for a clash of two Silicon Valley titans, Oracle said Thursday that it has filed a federal lawsuit alleging that Google's popular Android operating system was built on Oracle's Java software without permission....
+				
+			</p>
+			Keywords:
+			<small>android,google,oracle,java</small>
+			</div>		
+		</div>
+		
+		<div  class="users">
+		<h3>Review of the Leica M9 Digital Camera, by Rich Svinkin</h3>
+			<div class="article" style="display:none;">
+			<p>
+			It took a second to process that the wedding photographer was talking about my camera. It was the shock of phrasing, not the awe displayed, that startled me. When I’m carrying this beauty around I get stopped by strangers all the ...
+			</p>
+			Keywords: 
+			<small>photography,leica,digital-photography</small>			
+			</div>
+		</div>
+          	  
+    </div>
+  </body>
+</html>
