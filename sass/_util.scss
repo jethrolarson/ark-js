@@ -1,0 +1,45 @@
+@import url(_base.sass);
+
+@mixin sprite_grid($url, $gridsize, $col, $row) {
+  background-image: url($url);
+  background-position: -#{($col - 1) * $gridsize} -#{($row - 1) * $gridsize};
+  background-repeat: no-repeat; }
+
+@mixin ui_sprite($col, $row) {
+  @include sprite_grid("../images/ui-sprite.png", 16px, $col, $row); }
+
+@mixin checkbox_sprite($row) {
+  background: {
+    image: url(http://www.todoosie.com/static/cb.png);
+    repeat: no-repeat; };
+  @if $row == 1 {
+    background-position: 10px 6px; }
+  @else if $row == 2 {
+    background-position: 10px -44px; } }
+
+@mixin hide {
+  display: none; }
+
+@mixin clearfix {
+  zoom: 1;
+  &:after {
+    content: "";
+    display: block;
+    clear: both; } }
+
+@mixin corner_all($radius) {
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  border-radius: $radius; }
+
+@mixin corner_top($radius) {
+  -moz-border-radius: $radius $radius 0 0;
+  -webkit-border-radius-topleft: $radius;
+  -webkit-border-radius-topright: $radius;
+  border-radius: $radius $radius 0 0; }
+
+@mixin corner_bottom($radius) {
+  -moz-border-radius: 0 0 $radius $radius;
+  -webkit-border-radius-bottomleft: $radius;
+  -webkit-border-radius-bottomright: $radius;
+  border-radius: 0 0 $radius $radius; }

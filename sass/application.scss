@@ -1,0 +1,30 @@
+// gem install sass sass:static
+@import url(_base.sass);
+@import url(_util.scss);
+@import url(_reset.scss);
+@import url(_typo.scss);
+
+#sidebar{
+	width: 280px; 
+	float: left;
+	aside{
+		border: 1px solid $bc_default;
+		height: 300px;
+		ul{
+			overflow: auto;
+		}
+	}
+	
+}
+#content{
+	width: 600px;
+	float: left;}
+#tweets{
+	div{
+		padding: 10px;
+		background: -moz-linear-gradient(top, #eee, #aaa);
+	}
+}
+
+
+@import url(jquery.gritter.scss);
