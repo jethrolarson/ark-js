@@ -27,7 +27,6 @@ $(function(){
 
 	new ArcServer({
 		'subscribePosts':{
-			callName: 'getPosts',
 			onMessage: function(e){
 				var posts = [],
 				self = this;

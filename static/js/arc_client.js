@@ -65,8 +65,8 @@
 		ArcClient.sendMessage('getElements', obj, callback);
 	};
 	
-	ArcClient.prototype.pageCall = function(name, args, callback){
-		ArcClient.sendMessage('pageCall', name, args, callback);
+	ArcClient.prototype.pageRequest = function(name, args, callback){
+		ArcClient.sendMessage('pageRequest', name, args, callback);
 	};
 	
 	window.ArcClient = ArcClient;
