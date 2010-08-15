@@ -9,7 +9,7 @@
 		}
 	};
 	
-	if(window.top === window){ return;}
+//	if(window.top === window){ return;}
 	
 	function Policy(options){
 		this.callName = options.callName;
@@ -18,7 +18,7 @@
 	}
 	Policy.prototype.message = function(e, arc){
 		var data = JSON.parse(e.data);
-		this.id = data.id;
+		this.callbackId = data.callbackId;
 		this.origin = data.origin;
 		this.source = data.source;
 		this.messageHandler.call(arc, e, data);
@@ -27,7 +27,7 @@
 	var ArcServer = function(policies){
 		var self = this;
 		this.source = undefined;
-		this.id = undefined;
+		this.callbackId = undefined;
 		this.policies = {};
 		policies.discover = discoverPolicy;
 		for(key in policies){
@@ -48,7 +48,7 @@
 					storage.set('ArcMessages',o);
 				}
 			}
-			self.id = data.id;
+			self.callbackId = data.callbackId;
 			var policy = self.policies[data.callName];
 			if(policy){
 				policy.message(e,self);
@@ -72,10 +72,10 @@
 	};
 	
 	ArcServer.prototype.respond = function(e, message){	
-		//respond with call, id and any described data
+		//respond with call, callbackId and any described data
 		var data = JSON.parse(e.data);
-		var postMessage = JSON.stringify({callName: data.callName, id: data.id, message: message});
-		console.log(this.source)
+		var postMessage = JSON.stringify({callName: data.callName, callback: data.callbackId, message: message});
+		console.log("Server respond:"+this.source)
 		this.source.postMessage(postMessage, '*');
 		console.log(postMessage+"/"+this.origin);
 	};
@@ -95,7 +95,7 @@
 			if(!o[this.origin]){
 				o[this.origin] = [];
 			}
-			mo = {id: e.id, callName: e.callName };
+			mo = {callbackId: e.callbackId, callName: e.callName };
 			if(typeof message !== undefined)  mo.message = message;
 			if(typeof fn !== undefined) mo.fn = fn;
 			o[e.origin].push(mo);

@@ -41,7 +41,7 @@
 
 		var id = Math.floor(Math.random()*100000+(new Date().getTime()));
 		
-		var data = {'callName': callName,'id': id, 'data': params, callbackId: callName + "-" + id };
+		var data = {'callName': callName, 'data': params, callbackId: callName + "-" + id };
 		
 		this.requests[data.callbackId] = callback || function(){};
 		
@@ -50,7 +50,7 @@
 	};
 	
 	ArcClient.prototype.receiveMessage = function(event){
-		console.log(event)
+		console.log("Receive: "+event)
 		if (event.origin !== this.host) return;
 		this.requests[event.data.callbackId]();	 
 		delete this.requests[event.data.callbackId];
