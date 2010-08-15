@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8"/>
+		<title>XHR Test</title>
+		 
+<link rel="alternate" type="application/rss+xml" title="backalleycoder &raquo; Search Results for &#8220;chuck norris&#8221; Feed" href="http://www.backalleycoder.com/?s=chuck+norris&feed=rss2" />
+	
+	</head>
+	
+	<body>
+	
+		<h2 id="pageName">XHR Test</h2>
+		<select id="bad_asses">
+			<option>Chuck Norris</option>
+			<option>Mr. T</option>
+			<option>Magnum PI</option>
+			<option>Dan O</option>
+			<option>Night Rider</option>
+			<option>Steven Segal</option>
+		</select>
+		
+		<button id="fire">Fire!</button>
+		
+		<div>
+			
+		</div>
+		
+	</body>
+
+
+	<script src="/static/js/arc_client.js"></script>
+	<script>
+	
+		var Arc = new ArcClient("/static/tests/xhr_server.html");
+	
+		document.getElementById('fire').addEventListener('click', function(){
+		
+			Arc.sendMessage('pageRequest', { method: 'get', url: 'http://www.backalleycoder.com/', params: 's=' + document.getElementById('bad_asses').value + '&#038;feed=rss2' },
+				function(e, xml, text){
+					var result = document.createElement('div');
+					result.innerHTML = xml;
+				}
+			);
+			
+		}, false);
+
+	</script>
+
+</html>

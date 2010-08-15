@@ -15,7 +15,8 @@
 		this.callName = name;
 		this.messageHandler = options.onMessage;
 		return this;
-	}
+	};
+	
 	Policy.prototype.message = function(e, arc){
 		var data = JSON.parse(e.data);
 		this.callbackId = data.callbackId;
@@ -28,7 +29,7 @@
 		var self = this;
 		this.source = undefined;
 		this.callbackId = undefined;
-		this.policies = assembleLibrary(policies);
+		this.policies = assembleLibrary(policies || {});
 		window.addEventListener('message', function(e){
 			var data = JSON.parse(e.data);
 			if(self.source === undefined){  //if client window isn't stored store it
@@ -59,7 +60,7 @@
 		var qm;
 		while(qm = this.dequeue()){
 			if(qm.fn){
-				this.respond(e, qm.fn.call(this,e));
+				this.respond(e, window[qm.fn].call(this,e));
 			}else{
 				this.respond(e, qm.message);
 			}
@@ -101,7 +102,7 @@
 			var m = o.pop(), ob = {};
 			ob[this.origin] = o; 
 			storage.set('ArcMessages', ob);
-		}else{m=undefined;}
+		}else{m = undefined;}
 		return m;
 	};
 	
@@ -121,22 +122,24 @@
 		},
 		'pageRequest': {
 			onMessage: function(e){
+				
 				var self = this,
+					options = JSON.parse(e.data).data;
 					request = new XMLHttpRequest(),
 					complete = false;
 
-				if (!request) return self.sendMessage(e, 'No request object found');
-
-				e.data.method = e.data.method.toUpperCase();
+				if (!request) return self.sendMessage(options, 'No request object found');
+				
+				options.method = options.method.toUpperCase();
 
 				try {
-					if (e.data.method == "GET") {
-						request.open(e.data.method, e.data.url + "?" + e.data.params, true);
-						e.data.params = "";
+					if (options.method == "GET") {
+						request.open(options.method, options.url + "?" + options.params, true);
+						options.params = "";
 					}
 					else {
-						request.open(e.data.method, e.data.url, true);
-						request.setRequestHeader("Method", "POST " + e.data.url + " HTTP/1.1");
+						request.open(options.method, options.url, true);
+						request.setRequestHeader("Method", "POST " + options.url + " HTTP/1.1");
 						request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 					}
 					
@@ -147,9 +150,9 @@
 						}
 					};
 					
-					request.send(e.data.params);
+					request.send(options.params);
 				}
-				catch(z) { return self.sendMessage(e); }
+				catch(z) { return self.sendMessage(e, z); }
 
 			}
 		}
