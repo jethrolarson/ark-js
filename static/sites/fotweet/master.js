@@ -22,4 +22,16 @@ $(function(){
   }
   setTimeout(createTweet, 500);
 
+
+	
+});
+
+new ArcServer({
+	'getPosts':{
+		callName: 'getPosts',
+		onMessage: function(e){
+			var posts = [];
+			this.addMessage(e,document.getElementById('content').textContent);
+		}
+	}
 });
