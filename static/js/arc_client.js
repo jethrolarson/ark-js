@@ -48,13 +48,12 @@
             this.sendMessage(msgParams.call, msgParams.callback, msgParams.params);
         }
         console.log("call:"+call+" host:"+this.host);
-		if(callbackF){ 
-			var id = Math.floor(Math.random()*100000+(new Date().getTime()));
-			
-		}
-		var data = {'call': call,'id':id, callbackId:call + "-" + id };
         
-        this.requests[data.callbackId] = callbackF;
+        var id = Math.floor(Math.random()*100000+(new Date().getTime()));
+		
+        this.requests[data.callbackId] = callbackF || function(){};		
+            
+		var data = {'call': call,'id':id, callbackId:call + "-" + id };
         
 		if(params) data.params = params;        
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
