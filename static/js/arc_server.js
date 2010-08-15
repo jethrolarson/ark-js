@@ -60,7 +60,11 @@
 		var qm;
 		while(qm = this.dequeue()){
 			if(qm.fn){
-				this.respond(e, window[qm.fn].call(this,e));
+				if(window[qm.fn]){
+					this.respond(e, window[qm.fn].call(this,e));
+				}else{
+					this.enqueue(e,"",qmfn);
+				}
 			}else{
 				this.respond(e, qm.message);
 			}

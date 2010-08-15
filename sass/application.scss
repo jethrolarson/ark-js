@@ -9,9 +9,12 @@
 	float: left;
 	aside{
 		border: 1px solid $bc_default;
-		height: 300px;
+		header{
+			background: #eee -moz-gradient(top, #eee, #aaa);
+		}
 		ul{
 			overflow: auto;
+			height: 300px;
 		}
 	}
 	

@@ -313,10 +313,12 @@ input[type='button'], input[type='submit'], button, .button {
   width: 280px;
   float: left; }
   #sidebar aside {
-    border: 1px solid #b4b4b4;
-    height: 300px; }
+    border: 1px solid #b4b4b4; }
+    #sidebar aside header {
+      background: #eeeeee -moz-gradient(top, #eeeeee, #aaaaaa); }
     #sidebar aside ul {
-      overflow: auto; }
+      overflow: auto;
+      height: 300px; }
 
 #content {
   width: 600px;

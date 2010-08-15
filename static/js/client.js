@@ -1,14 +1,5 @@
 $(function(){
 	new ArcClient("/static/sites/fotweet/index.html").sendMessage('subscribePosts', {}, function(data){
-		$.gritter.add({
-			// (string | mandatory) the heading of the notification
-			title: "Tweet!",
-			// (string | mandatory) the text inside the notification
-			text: data.message
-			// (string | optional) the image to display on the left
-			//image: 'http://s3.amazonaws.com/twitter_production/profile_images/132499022/myface_bigger.jpg',
-			// (bool | optional) if you want it to fade out on its own or just sit there
-		});
 		$("#tweets").append("<li>"+data.message+"</li>");
 	});
 
@@ -44,15 +35,14 @@ $(function(){
 		});
 
 		function addAction(data) {
-			(data.message !== '') && $.gritter.add({
-				// (string | mandatory) the heading of the notification
-				title: "Fodora",
-				// (string | mandatory) the text inside the notification
-				text: data.message
-				// (string | optional) the image to display on the left
-				//image: 'http://s3.amazonaws.com/twitter_production/profile_images/132499022/myface_bigger.jpg',
-				// (bool | optional) if you want it to fade out on its own or just sit there
-			});
+			if(data.message !== 'Fastforwarding' && data.message !== 'Rewinding'){
+				$.gritter.add({
+					// (string | mandatory) the heading of the notification
+					title: "Fodora",
+					// (string | mandatory) the text inside the notification
+					text: data.message
+				});
+			}
 		}
 		function clearKey() {
 			prevKey = -1;
