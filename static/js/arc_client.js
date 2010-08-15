@@ -66,7 +66,7 @@
 		ArcClient.sendMessage('setStyles', obj);
     };
 	
-	ArcClient.prototype.getElements = function(obj){
+	ArcClient.prototype.getElements = function(obj, callback){
 		ArcClient.sendMessage('getElements', obj, callback);
     };
 	
