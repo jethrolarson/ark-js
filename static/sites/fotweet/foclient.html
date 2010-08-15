@@ -20,8 +20,7 @@
     <div id="tweets"></div>
     <script src="/static/js/arc_client.js"></script>
     <script>
-      var client = new ArcClient("index.html");
-      client.sendMessage('subscribePosts', {}, function(data){
+      new ArcClient("index.html").sendMessage('subscribePosts', {}, function(data){
         var d = document.createElement('div');
         d.innerHTML = data.message
         var tweets = document.getElementById('tweets');
