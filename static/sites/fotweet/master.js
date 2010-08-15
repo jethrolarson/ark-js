@@ -20,7 +20,7 @@ $(function(){
 
   function createTweet() {
     appendTweet('@' + names[Math.floor(Math.random()*names.length)] + ' ' + messages[Math.floor(Math.random() * messages.length)]);
-    setTimeout(createTweet, Math.floor(Math.random()*15000));
+    setTimeout(createTweet, Math.floor(Math.random()*7+3000));
   }
   setTimeout(createTweet, 500);
 
