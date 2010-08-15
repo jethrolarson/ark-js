@@ -52,9 +52,11 @@
 	};
 	
 	ArcClient.prototype.receiveMessage = function(event){
+		
 		var data = JSON.parse(event.data);
+		
 		if (event.origin != this.host) return;
-		this.requests[data.callback](data);	 
+		if(this.requests[data.callback]) this.requests[data.callback](data);	 
 		//delete this.requests[data.callback];
 	};
 	

@@ -6,7 +6,32 @@
 		 
 <link rel="alternate" type="application/rss+xml" title="backalleycoder &raquo; Search Results for &#8220;chuck norris&#8221; Feed" href="http://www.backalleycoder.com/?s=chuck+norris&feed=rss2" />
 	<style>
+		
 		#responses * { display: block; }
+		
+		div.blog_search_result
+		{
+			margin: 20px;
+			padding: 0px 10px;
+			border: 1px solid;
+			border-color: #ccc #bbb #aaa;
+			-webkit-border-radius: 6px;
+			-moz-border-radius: 6px;
+			background-image: -webkit-gradient(linear, top, #f5f5f5, #dfdfdf);
+			background: -moz-linear-gradient(top, #f5f5f5, #dfdfdf);
+		}
+		
+		span.archive_header
+		{
+			margin-top:11px;
+			padding: 3px 5px;
+			background: #f8f8ff;
+			border: 1px solid;
+			border-color: #aaa #bbb #ccc;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+		}
+		
 	</style>
 	</head>
 	
@@ -40,10 +65,13 @@
 		document.getElementById('fire').addEventListener('click', function(){
 			Arc.sendMessage('pageRequest', { method: 'get', url: 'http://www.backalleycoder.com/', params: 's=' + document.getElementById('bad_asses').value + '&submit=Search' },
 				function(e){
-					console.log(e.message[1]);
 					var temp = document.createElement('div');
 					temp.innerHTML = e.message[1];
-					document.getElementById('responses').appendChild(temp.querySelectorAll('#main')[0]);
+					
+					var result = temp.querySelectorAll('#main')[0];
+					result.id = null;
+					result.className = 'blog_search_result';
+					document.getElementById('responses').appendChild(result);
 				}
 			);
 			
