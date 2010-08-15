@@ -14,24 +14,29 @@ $(function(){
 
   function appendTweet(text) {
     tweets.html('<div class="update">'+text+'</div>'+tweets.html());
+		console.log("newTweet")
+		$('#newTweet').trigger("newTweet");
   }
 
   function createTweet() {
-    appendTweet('@'+names[Math.floor(Math.random()*names.length)]+' '+messages[Math.floor(Math.random()*messages.length)]);
+    appendTweet('@' + names[Math.floor(Math.random()*names.length)] + ' ' + messages[Math.floor(Math.random() * messages.length)]);
     setTimeout(createTweet, Math.floor(Math.random()*15000));
   }
   setTimeout(createTweet, 500);
 
 
-	
-});
-
-new ArcServer({
-	'getPosts':{
-		callName: 'getPosts',
-		onMessage: function(e){
-			var posts = [];
-			this.addMessage(e,document.getElementById('content').textContent);
+	new ArcServer({
+		'subscribePosts':{
+			callName: 'getPosts',
+			onMessage: function(e){
+				var posts = [],
+				self = this;
+				$(function(){
+					$('#newTweet').bind("newTweet", function(){
+						self.sendMessage(e,$('.update:first').html());
+					});
+				});
+			}
 		}
-	}
+	});
 });

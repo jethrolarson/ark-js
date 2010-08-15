@@ -6,16 +6,14 @@
   </head>
   <body>
     <h2 id="pageName">Parent page</h2>
-    
+    <div id="tweets"></div>
     <script src="/static/js/arc_client.js"></script>
     <script>
       var client = new ArcClient("index.html");
-            
-       client.sendMessage('getPosts',{},function(data){
-       
-        alert("message sent back from server:" + data);
-       
-       });
+      client.sendMessage('subscribePosts', {}, function(data){
+        document.getElementById('tweets').innerHTML = data.message;
+        console.log(data)
+      });
       
     </script>
   </body>
