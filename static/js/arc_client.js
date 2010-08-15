@@ -27,17 +27,17 @@
 	};
 	//: sendMessage
 	//  @options #optional
-	ArcClient.prototype.sendMessage = function(call, callback, params){
-        console.log("call:"+call+" host:"+this.host);
+	ArcClient.prototype.sendMessage = function(callName, callback, params){
 		if(callback){ 
 			var id = Math.floor(Math.random()*100000+(new Date().getTime()));
 			window.addEventListener('message', function(e){
 				e.data.id === id && callback.call(this,e);
 			}, false);
 		}
-		var data = {'call': call,'id':id};
+		var data = {'callName': callName,'id':id};
 		if(params) data.params = params;        
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
+		console.log(data)
 	};
 	window.ArcClient = ArcClient;
 	
