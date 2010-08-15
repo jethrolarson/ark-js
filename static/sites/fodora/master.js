@@ -38,15 +38,14 @@ $(function(){
 		if(trackIndex === len) trackIndex = 0;
 		tracks[trackIndex].play();
 	});
-	
+
 	new ArcServer({
 		'fastforward': {
 			callName: 'fastforward',
 			onMessage: function(e) {
 				self = this;
 				ffButton.click();
-				console.log('Server: '+$('#playlist li')[trackIndex].textContent)
-				self.sendMessage(e, $('#playlist li')[trackIndex].textContent);
+				self.sendMessage(e, 'Fastforwarding');
 			}
 		},
 		'rewind':{
@@ -54,8 +53,7 @@ $(function(){
 			onMessage: function(e) {
 				self = this;
 				rwButton.click();
-				console.log('Server: '+$('#playlist li')[trackIndex].textContent)
-				self.sendMessage(e, $('#playlist li')[trackIndex].textContent);
+				self.sendMessage(e, 'Rewinding');
 			}
 		},
 		'playpause':{
@@ -63,11 +61,28 @@ $(function(){
 			onMessage: function(e) {
 				self = this;
 				pButton.click();
-				console.log('recieved play')
-				console.log('Track: '+trackIndex)
-				console.log('Server: '+$('#playlist li')[trackIndex].textContent)
 				var trackName = $('#playlist li')[trackIndex].textContent;
-				self.sendMessage(e, (pButton.val() == 'Play' ? 'Paused' : 'Playing') + ' ' + trackName);
+				self.sendMessage(e, (pButton.val() == 'Play' ? 'Paused: '+trackName : ''));
+			}
+		},
+		'subscribePlay':{
+			onMessage: function(e) {
+				self = this;
+				$(function(){
+					$('body').bind('play', function(){
+						console.log('Got a play event')
+						console.log('Sending '+$('#playlist li')[trackIndex].textContent)
+						self.sendMessage(e, 'Playing: '+$('#playlist li')[trackIndex].textContent);
+					});
+				});
+			}
+		},
+		'unsubscribPlay':{
+			onMessage: function(e){
+				self = this;
+				$(function(){
+					$('body').unbind('play');
+				});
 			}
 		}
 	});
