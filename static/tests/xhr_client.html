@@ -5,7 +5,9 @@
 		<title>XHR Test</title>
 		 
 <link rel="alternate" type="application/rss+xml" title="backalleycoder &raquo; Search Results for &#8220;chuck norris&#8221; Feed" href="http://www.backalleycoder.com/?s=chuck+norris&feed=rss2" />
-	
+	<style>
+		#responses * { display: block; }
+	</style>
 	</head>
 	
 	<body>
@@ -18,11 +20,12 @@
 			<option>Dan O</option>
 			<option>Night Rider</option>
 			<option>Steven Segal</option>
+			<option>Hello World</option>
 		</select>
 		
 		<button id="fire">Fire!</button>
 		
-		<div>
+		<div id="responses">
 			
 		</div>
 		
@@ -32,14 +35,15 @@
 	<script src="/static/js/arc_client.js"></script>
 	<script>
 	
-		var Arc = new ArcClient("/static/tests/xhr_server.html");
+		var Arc = new ArcClient('http://www.backalleycoder.com/');
 	
 		document.getElementById('fire').addEventListener('click', function(){
-		
-			Arc.sendMessage('pageRequest', { method: 'get', url: 'http://www.backalleycoder.com/', params: 's=' + document.getElementById('bad_asses').value + '&#038;feed=rss2' },
-				function(e, xml, text){
-					var result = document.createElement('div');
-					result.innerHTML = xml;
+			Arc.sendMessage('pageRequest', { method: 'get', url: 'http://www.backalleycoder.com/', params: 's=' + document.getElementById('bad_asses').value + '&submit=Search' },
+				function(e){
+					console.log(e.message[1]);
+					var temp = document.createElement('div');
+					temp.innerHTML = e.message[1];
+					document.getElementById('responses').appendChild(temp.querySelectorAll('#main')[0]);
 				}
 			);
 			
