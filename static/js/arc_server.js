@@ -75,9 +75,9 @@
 		//respond with call, id and any described data
 		var data = JSON.parse(e.data);
 		var postMessage = JSON.stringify({callName: data.callName, id: data.id, message: message});
-		
-		this.source.postMessage(postMessage, e.origin);  
-
+		console.log(this.source)
+		this.source.postMessage(postMessage, '*');
+		console.log(postMessage+"/"+this.origin);
 	};
 	
 	ArcServer.prototype.addMessage = function(e,message){
