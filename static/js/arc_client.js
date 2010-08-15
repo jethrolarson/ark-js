@@ -16,7 +16,9 @@
 		//hide the iFrame
 		//put the iFrame in the document
 		document.body.appendChild(this.iFrame);
-		window.addEventListener("message", function(event){ self.receiveMessage.call(self, event) }, false);
+		window.addEventListener("message", function(event){ 
+			self.receiveMessage.call(self, event);
+		}, false);
 		this.iFrame.onload = function(){  //store the host of the iframe so we aren't posting messages to the wrong site.
 			self.frameLoaded = true;
 			self.host = this.ownerDocument.location.protocol + "//" + this.ownerDocument.location.host;
@@ -38,7 +40,7 @@
 			this.sendMessage(msgParams.callName, msgParams.params, msgParams.callback);
 		}
 
-		var id = Math.floor(Math.random()*100000+(new Date().getTime()));
+		var id = Math.floor(Math.random() * 100000 + (new Date().getTime()));
 		
 		var data = {'callName': callName, 'data': params, callbackId: callName + "-" + id };
 		
@@ -50,10 +52,9 @@
 	
 	ArcClient.prototype.receiveMessage = function(event){
 		var data = JSON.parse(event.data);
-		console.log(event.origin + '  ' + this.host);
 		if (event.origin != this.host) return;
 		this.requests[data.callback](data);	 
-		delete this.requests[data.callback];
+		//delete this.requests[data.callback];
 	};
 	
 	ArcClient.prototype.setStyles = function(obj){

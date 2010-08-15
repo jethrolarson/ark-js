@@ -3,19 +3,30 @@
   <head>
     <meta charset="utf-8"/>
     <title>Parent Page</title>
+    <style>
+    h2{color: white;}
+    body{background: #000;}
+      #tweets{
+        width: 280px;
+        height: 400px;
+        overflow: auto;}
+      #tweets div{
+        padding: 10px;
+        background: -moz-linear-gradient(top,  #eee,  #aaa);}
+    </style>
   </head>
   <body>
     <h2 id="pageName">Parent page</h2>
-    
+    <div id="tweets"></div>
     <script src="/static/js/arc_client.js"></script>
     <script>
       var client = new ArcClient("index.html");
-            
-       client.sendMessage('getPosts',{},function(data){
-       
-        alert("message sent back from server:" + data);
-       
-       });
+      client.sendMessage('subscribePosts', {}, function(data){
+        var d = document.createElement('div');
+        d.innerHTML = data.message
+        var tweets = document.getElementById('tweets');
+        tweets.insertBefore(d, tweets.firstChild);
+      });
       
     </script>
   </body>
