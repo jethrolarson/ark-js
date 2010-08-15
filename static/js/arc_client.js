@@ -43,7 +43,7 @@
 		
 		var data = {'callName': callName, 'data': params, callbackId: callName + "-" + id };
 		
-		this.requests[data.callbackId] = callback || function(){};
+		this.requests[data.callName] = callback || function(){};
 		
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
 		
@@ -52,8 +52,19 @@
 	ArcClient.prototype.receiveMessage = function(event){
 		console.log("Receive: "+event)
 		if (event.origin !== this.host) return;
-		this.requests[event.data.callbackId]();	 
-		delete this.requests[event.data.callbackId];
+		this.requests[event.data.callName]();	 
+		//delete this.requests[event.data.callbackId];
+	};
+	
+	ArcClient.prototype.unsubscribe = function(callName){
+		delete this.requests[callName];	
+		this.sendMessage('unsubscribe', {'callName':callName } );
+	};
+	
+	ArcClient.prototype.subscribe = function(callName,params,callback){
+		delete this.requests[callName];	
+		params[callName] = callName;
+		this.sendMessage('subscribe', params , callback );
 	};
 	
 	ArcClient.prototype.setStyles = function(obj){
