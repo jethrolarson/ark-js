@@ -52,10 +52,13 @@
 	ArcClient.prototype.receiveMessage = function(event){
 		console.log("Receive: "+event)
 		if (event.origin !== this.host) return;
-		this.requests[event.data.callName]();	 
-		//delete this.requests[event.data.callbackId];
+		this.requests[event.data.callName]();
+		/*if(event.data.callName.indexOf("unsubscribe")>-1 || event.data.callName.indexOf("subscribe")==-1){
+			delete this.requests[event.data.callName];
+		}*/
 	};
 	
+	/*  rely on method name to determine if subscribe/unsubscribe
 	ArcClient.prototype.unsubscribe = function(callName){
 		delete this.requests[callName];	
 		this.sendMessage('unsubscribe', {'callName':callName } );
@@ -65,7 +68,7 @@
 		delete this.requests[callName];	
 		params[callName] = callName;
 		this.sendMessage('subscribe', params , callback );
-	};
+	};*/
 	
 	ArcClient.prototype.setStyles = function(obj){
 		ArcClient.sendMessage('setStyles', obj);
