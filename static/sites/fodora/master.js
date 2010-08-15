@@ -6,7 +6,7 @@ $(function(){
 	var ffButton = $('#fastforward');
 	var rwButton = $('#rewind');
 	var pButton = $('#play');
-	
+
 	$('#rewind, #fastforward').click(function(){
 		if(!tracks[trackIndex].paused) tracks[trackIndex].pause();
 		tracks[trackIndex].currentTime = 0;
@@ -42,25 +42,31 @@ $(function(){
 	new ArcServer({
 		'fastforward': {
 			callName: 'fastforward',
-			callback: function(e) {
+			onMessage: function(e) {
 				self = this;
 				ffButton.click();
-				self.sendMessage(e, $('#playlist li')[trackIndex].text());
+				console.log('Server: '+$('#playlist li')[trackIndex].textContent)
+				self.sendMessage(e, $('#playlist li')[trackIndex].textContent);
 			}
 		},
 		'rewind':{
 			callName: 'rewind',
-			callback: function(e) {
+			onMessage: function(e) {
 				self = this;
 				rwButton.click();
-				self.sendMessage(e, $('#playlist li')[trackIndex].text());
+				console.log('Server: '+$('#playlist li')[trackIndex].textContent)
+				self.sendMessage(e, $('#playlist li')[trackIndex].textContent);
 			}
 		},
 		'playpause':{
 			callName:'playpause',
-			callback: function(e) {
+			onMessage: function(e) {
+				self = this;
 				pButton.click();
-				var trackName = $('#playlist li')[trackIndex].text();
+				console.log('recieved play')
+				console.log('Track: '+trackIndex)
+				console.log('Server: '+$('#playlist li')[trackIndex].textContent)
+				var trackName = $('#playlist li')[trackIndex].textContent;
 				self.sendMessage(e, (pButton.val() == 'Play' ? 'Paused' : 'Playing') + ' ' + trackName);
 			}
 		}

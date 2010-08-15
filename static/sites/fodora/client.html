@@ -2,34 +2,59 @@
 <html lang="en-us">
 	<head>
 		<meta charset="utf-8"/>
-		<title>Fodora Client</title>
-		<link src="master.css" rel="stylesheet" />
+		<title>Parent Page</title>
 	</head>
 	<body>
-		<div id="content">
-			<div id="controls">
-				<input id="rewind" type="button" value="<<" />
-				<input id="play" type="button" value="Play" />
-				<input id="fastforward" type="button" value=">>" />
-			</div>
-			<strong>Track List</strong>
-			<ul id="playlist">
-				<li>L</li>
-				<li>Architecture In Helsinki - Heart It Races (YACHT Should I Coco Remix)</li>
-				<li>MGMT - Electric Feel (Justice Remix)</li>
-				<li>Madvillain - Money Folder (Four Tet Remix)</li>
-				<li>Das Racist - Combination Pizza Hut and Taco Bell</li>
-			</ul>
-			<div id="tracks">
-				<audio src="audio/l_estasi_del_oro.ogg" autobuffer />
-				<audio src="audio/aih_heart_it_races_remix.ogg" autobuffer />
-				<audio src="audio/mgmg_electric_feel_justice_remix.ogg" autobuffer />
-				<audio src="audio/madvillainy_money_folder_fourtet_remix.ogg" autobuffer />
-				<audio src="audio/das_racist_combination_pizzahut_and_tacobell.ogg" autobuffer />
-			</div>
-		</div>
+		<h2 id="pageName">Parent page</h2>
+		<ol id="actions"></ol>
+		<script src="/static/js/arc_client.js"></script>
 		<script src="http://www.google.com/jsapi"></script>
-		<script> google.load('jquery','1'); </script>
-		<script src="master.js"></script>
+		<script> google.load('jquery', '1'); </script>
+		<script>
+			var client = new ArcClient("index.html");
+
+			$(function(){
+				var prevKey = -1;
+				var keyTimeout = 600;
+				var keyTimer;
+
+				var actionList = $('#actions');
+				$(document).keyup(function (e) {
+					if(e.target.tagName !== 'textarea' && e.target.tagName !== 'input') {
+						if(e.which === 70 || e.which === 80 || e.which === 82) {
+							if(e.which === prevKey) {
+								var message = 'playpause';
+								switch(e.which) {
+									case 70: //FF
+										message = 'fastforward';
+										break;
+									case 82: //RR
+										message = 'rewind';
+										break;
+								}
+								client.sendMessage(message, {}, addAction);
+							} else {
+								prevKey = e.which;
+								setTimeout(clearKey, keyTimeout);
+							}
+						}
+					}
+				});
+
+				function addAction(data) {
+					console.log('Action: '+data)
+					actionList.html('<li class="action">'+data.message+'</li>'+actionList.html());
+				}
+				function clearKey() {
+					prevKey = -1;
+				}
+			});
+
+/*			client.sendMessage('subscribePosts', {}, function(data){
+				document.getElementById('tweets').innerHTML = data.message;
+				console.log(data)
+			});
+*/
+		</script>
 	</body>
 </html>
