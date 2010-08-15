@@ -11,6 +11,11 @@
     <script>
       var client = new ArcClient("http://localhost:8081/static/server.html");
             
+       client.sendMessage('test',function(data){
+       
+        console.log("message sent back from server" + data);
+       
+       },null);
       
     </script>
   </body>
