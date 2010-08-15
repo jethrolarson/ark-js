@@ -26,7 +26,9 @@
             self.frameLoaded = true;
 			self.host = this.ownerDocument.location.protocol + "//" + this.ownerDocument.location.host;
             window.addEventListener("message", this.receiveMessage, false);  
-			self.sendMessage('discover');
+			self.sendMessage('discover', {} ,function(data){
+				console.log(data);
+			});
 		};
         this.iFrame.unload = function(){
             console.log("iframe unloaded wtf");
@@ -60,12 +62,18 @@
 	};
 	
     ArcClient.prototype.receiveMessage = function(event){
+		console.log(event);
         if (event.origin !== this.host) { return; }
             
         this.requests[event.data.callbackId]();  
 		delete this.requests[event.data.callbackId];
 		
     };
+	ArcClient.prototype.setStyle = function(options){
+		
+		
+	
+	};
     
 	window.ArcClient = ArcClient;
 	
