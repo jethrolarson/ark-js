@@ -77,10 +77,9 @@
 		var postMessage = JSON.stringify({callName: data.callName, callback: data.callbackId, message: message});
 		console.log("Server respond:"+this.source)
 		this.source.postMessage(postMessage, '*');
-		console.log(postMessage+"/"+this.origin);
 	};
 	
-	ArcServer.prototype.addMessage = function(e,message){
+	ArcServer.prototype.sendMessage = function(e,message){
 		this.enqueue(e, message);
 		this.checkQueue(e);
 	};
@@ -90,22 +89,24 @@
 	};
 	
 	ArcServer.prototype.enqueue = function(e, message, fn){
-			var o = storage.get('ArcMessages'),
-			    mo = {};
-			if(!o[this.origin]){
-				o[this.origin] = [];
-			}
-			mo = {callbackId: e.callbackId, callName: e.callName };
-			if(typeof message !== undefined)  mo.message = message;
-			if(typeof fn !== undefined) mo.fn = fn;
-			o[e.origin].push(mo);
-			storage.set('ArcMessages', o);
+		var data = JSON.parse(e.data);
+		var o = storage.get('ArcMessages'),
+		    mo = {};
+		if(!o[this.origin]){
+			o[this.origin] = [];
+		}
+		mo = {callbackId: data.callbackId, callName: data.callName };
+		if(typeof message !== undefined)  mo.message = message;
+		if(typeof fn !== undefined) mo.fn = fn;
+		o[e.origin].push(mo);
+		storage.set('ArcMessages', o);
 	};
 	ArcServer.prototype.dequeue = function(){
 		var o = storage.get('ArcMessages')[this.origin];
 		if(o){
-			var m = o.pop();
-			storage.set('ArcMessages', o);
+			var m = o.pop(), ob = {};
+			ob[this.origin] = o; 
+			storage.set('ArcMessages', ob);
 		}else{m=undefined;}
 		return m;
 	};
@@ -120,7 +121,7 @@
 			for(policy in this.policies){
 				callNames.push(policy);
 			}
-			this.addMessage(e,callNames);
+			this.sendMessage(e,callNames);
 		}
 	};
 	

@@ -16,11 +16,12 @@
 		//hide the iFrame
 		//put the iFrame in the document
 		document.body.appendChild(this.iFrame);
-		window.addEventListener("message", this.receiveMessage, false);
+		window.addEventListener("message", function(event){ 
+			self.receiveMessage.call(self, event);
+		}, false);
 		this.iFrame.onload = function(){  //store the host of the iframe so we aren't posting messages to the wrong site.
 			self.frameLoaded = true;
 			self.host = this.ownerDocument.location.protocol + "//" + this.ownerDocument.location.host;
-				 
 			self.sendMessage('discover');
 		};
 		this.iFrame.unload = function(){
@@ -39,36 +40,22 @@
 			this.sendMessage(msgParams.callName, msgParams.params, msgParams.callback);
 		}
 
-		var id = Math.floor(Math.random()*100000+(new Date().getTime()));
+		var id = Math.floor(Math.random() * 100000 + (new Date().getTime()));
 		
 		var data = {'callName': callName, 'data': params, callbackId: callName + "-" + id };
 		
-		this.requests[data.callName] = callback || function(){};
+		this.requests[data.callbackId] = callback || function(){};
 		
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
 		
 	};
 	
 	ArcClient.prototype.receiveMessage = function(event){
-		console.log("Receive: "+event)
-		if (event.origin !== this.host) return;
-		this.requests[event.data.callName]();
-		/*if(event.data.callName.indexOf("unsubscribe")>-1 || event.data.callName.indexOf("subscribe")==-1){
-			delete this.requests[event.data.callName];
-		}*/
+		var data = JSON.parse(event.data);
+		if (event.origin != this.host) return;
+		this.requests[data.callback](data);	 
+		//delete this.requests[data.callback];
 	};
-	
-	/*  rely on method name to determine if subscribe/unsubscribe
-	ArcClient.prototype.unsubscribe = function(callName){
-		delete this.requests[callName];	
-		this.sendMessage('unsubscribe', {'callName':callName } );
-	};
-	
-	ArcClient.prototype.subscribe = function(callName,params,callback){
-		delete this.requests[callName];	
-		params[callName] = callName;
-		this.sendMessage('subscribe', params , callback );
-	};*/
 	
 	ArcClient.prototype.setStyles = function(obj){
 		ArcClient.sendMessage('setStyles', obj);
