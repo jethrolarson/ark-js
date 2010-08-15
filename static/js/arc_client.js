@@ -12,7 +12,7 @@
 		this.iFrame.src = url;
 		this.iFrame.style.cssText = 'visibility: hidden; left:-999999px; position: absolute;';
 		this.frameLoaded = false;
-
+		
 		//hide the iFrame
 		//put the iFrame in the document
 		document.body.appendChild(this.iFrame);
@@ -21,7 +21,8 @@
 		}, false);
 		this.iFrame.onload = function(){  //store the host of the iframe so we aren't posting messages to the wrong site.
 			self.frameLoaded = true;
-			self.host = this.ownerDocument.location.protocol + "//" + this.ownerDocument.location.host;
+			var location = self.iFrame.src.split('/');
+			self.host = ((location[0].length > 0) ? location[0] + '//' : '') + location[2];
 			self.sendMessage('discover');
 		};
 		this.iFrame.unload = function(){

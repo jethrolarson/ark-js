@@ -61,7 +61,11 @@
 		var qm;
 		while(qm = this.dequeue()){
 			if(qm.fn){
-				this.respond(e, window[qm.fn].call(this,e));
+				if(window[qm.fn]){
+					this.respond(e, window[qm.fn].call(this,e));
+				}else{
+					this.enqueue(e,"",qmfn);
+				}
 			}else{
 				this.respond(e, qm.message);
 			}
@@ -123,7 +127,6 @@
 		},
 		'pageRequest': {
 			onMessage: function(e){
-				
 				var self = this,
 					options = JSON.parse(e.data).data;
 					request = new XMLHttpRequest(),
@@ -144,12 +147,12 @@
 						request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 					}
 					
-					request.onreadystatechange = function(){
-						if (request.readyState == 4 && !complete) {
-							complete = true;
-							self.sendMessage(e, [request.responseXML, request.responseText]);
+					request.onload = function(response) {
+						if (request.readyState == 4) {  
+							if(request.status == 200 || request.status == 302 || request.status == 304) self.sendMessage(e, [request.responseXML, request.responseText, response]);
+							else self.sendMessage(e, 'there was an error');  
 						}
-					};
+					};  
 					
 					request.send(options.params);
 				}
