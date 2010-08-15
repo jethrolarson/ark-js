@@ -11,8 +11,8 @@
 	
 //	if(window.top === window){ return;}
 	
-	function Policy(options){
-		this.callName = options.callName;
+	function Policy(name, options){
+		this.callName = name;
 		this.messageHandler = options.onMessage;
 		return this;
 	}
@@ -28,12 +28,7 @@
 		var self = this;
 		this.source = undefined;
 		this.callbackId = undefined;
-		this.policies = {};
-		policies.discover = discoverPolicy;
-		for(key in policies){
-			this.policies[key] = new Policy(policies[key]);
-		}
-		
+		this.policies = assembleLibrary(policies);
 		window.addEventListener('message', function(e){
 			var data = JSON.parse(e.data);
 			if(self.source === undefined){  //if client window isn't stored store it
@@ -75,7 +70,6 @@
 		//respond with call, callbackId and any described data
 		var data = JSON.parse(e.data);
 		var postMessage = JSON.stringify({callName: data.callName, callback: data.callbackId, message: message});
-		console.log("Server respond:"+this.source)
 		this.source.postMessage(postMessage, '*');
 	};
 	
@@ -114,15 +108,59 @@
 	window.ArcServer = ArcServer;
 	
 	//Standard Library
-	var discoverPolicy = {
-		callName: 'discover',
-		onMessage: function(e){
-			var callNames = [];
-			for(policy in this.policies){
-				callNames.push(policy);
+	
+	var standardLibrary = {
+		'discover': {
+			onMessage: function(e){
+				var callNames = [];
+				for(policy in this.policies){
+					callNames.push(policy);
+				}
+				this.sendMessage(e,callNames);
 			}
-			this.sendMessage(e,callNames);
+		},
+		'pageRequest': {
+			onMessage: function(e){
+				var self = this,
+					request = new XMLHttpRequest(),
+					complete = false;
+
+				if (!request) return self.sendMessage(e, 'No request object found');
+
+				e.data.method = e.data.method.toUpperCase();
+
+				try {
+					if (e.data.method == "GET") {
+						request.open(e.data.method, e.data.url + "?" + e.data.params, true);
+						e.data.params = "";
+					}
+					else {
+						request.open(e.data.method, e.data.url, true);
+						request.setRequestHeader("Method", "POST " + e.data.url + " HTTP/1.1");
+						request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					}
+					
+					request.onreadystatechange = function(){
+						if (request.readyState == 4 && !complete) {
+							complete = true;
+							self.sendMessage(e, [request.responseXML, request.responseText]);
+						}
+					};
+					
+					request.send(e.data.params);
+				}
+				catch(z) { return self.sendMessage(e); }
+
+			}
 		}
+	}
+	
+	var assembleLibrary = function(policies){
+		for(lib in standardLibrary){ policies[lib] = standardLibrary[lib] }
+		for(lib in policies){ policies[lib] = new Policy(lib, policies[lib]) }
+		return policies;
 	};
+	
+	
 	
 })(window,document);
