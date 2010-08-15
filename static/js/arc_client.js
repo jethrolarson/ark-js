@@ -54,7 +54,7 @@
 		var data = JSON.parse(event.data);
 		if (event.origin != this.host) return;
 		this.requests[data.callback](data);	 
-		delete this.requests[data.callback];
+		//delete this.requests[data.callback];
 	};
 	
 	ArcClient.prototype.setStyles = function(obj){

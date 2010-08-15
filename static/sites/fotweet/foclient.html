@@ -3,6 +3,17 @@
   <head>
     <meta charset="utf-8"/>
     <title>Parent Page</title>
+    <style>
+    h2{color: white;}
+    body{background: #000;}
+      #tweets{
+        width: 280px;
+        height: 400px;
+        overflow: auto;}
+      #tweets div{
+        padding: 10px;
+        background: -moz-linear-gradient(top,  #eee,  #aaa);}
+    </style>
   </head>
   <body>
     <h2 id="pageName">Parent page</h2>
@@ -11,8 +22,10 @@
     <script>
       var client = new ArcClient("index.html");
       client.sendMessage('subscribePosts', {}, function(data){
-        document.getElementById('tweets').innerHTML = data.message;
-        console.log(data)
+        var d = document.createElement('div');
+        d.innerHTML = data.message
+        var tweets = document.getElementById('tweets');
+        tweets.insertBefore(d, tweets.firstChild);
       });
       
     </script>
