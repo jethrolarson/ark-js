@@ -1,0 +1,46 @@
+$smaller: 8px
+$small: 11px
+$normal: 12px
+$half: ($normal / 2)
+$double: $normal * 2
+$big: 20px
+$bigger: 24px
+
+$ff_default: "Helvetica Neue", Calibri, Helvetica, "Lucida Grande", Frutiger, Univers, Verdana, sans-serif
+$ff_heading: $ff_default
+
+$bgc_default: #fff
+$bgc_secondary: #1e4468
+$bgc_accent: #eee
+$bgc_hilight: #EFF3FF
+$w_sidebar: 250px
+$w_icon: 16px
+$bw_sidebar: 6px
+$p_default: 10px
+$fc_default: #444
+$fc_link: #0152a7
+$fc_deem: #666
+$fc_warning: #c33
+$fc_error: $fc_warning
+$bc_default: #B4B4B4
+$bc_dark: #aeaeae
+
+=ts_outset
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5)
+  
+=ts_inset
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(255, 255, 255, .5)
+  
+=roundBox
+  +corner_all(9px)
+  
+=roundLabel
+  +corner_all(4px)
+
+
+=boxShadow($x, $y, $spread)
+  -moz-box-shadow: $x $y $spread rgba(0, 0, 0, 0.25)
+  -webkit-box-shadow: $x $y $spread rgba(0, 0, 0, 0.25)
+  
+=highShadow
+  +boxShadow(0, 3px, 6px)

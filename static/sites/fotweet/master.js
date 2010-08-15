@@ -18,7 +18,7 @@ $(function(){
 	}
 
 	function createTweet() {
-		appendTweet('@' + names[Math.floor(Math.random() * names.length)] + ' ' + messages[Math.floor(Math.random() * messages.length)]);
+		appendTweet('<a href="#">@' + names[Math.floor(Math.random() * names.length)] + '</a> ' + messages[Math.floor(Math.random() * messages.length)]);
 		setTimeout(createTweet, Math.floor(Math.random() * 7000 + 3000));
 	}
 	setTimeout(createTweet, 500);
