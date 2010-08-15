@@ -6,6 +6,7 @@
 		
 		var self = this;
 		this.queue = new Array();
+        this.requests = new Object();
 		this.iFrame = document.createElement('iframe');
 		this.iFrame.src = url;
         this.frameLoaded = false;
@@ -35,10 +36,10 @@
 	};
 	//: sendMessage
 	//  @options #optional
-	ArcClient.prototype.sendMessage = function(call, callback, params){
+	ArcClient.prototype.sendMessage = function(call, callbackF, params){
         if(!this.frameLoaded){            
             console.log("frame not loaded.. Queing " + call);
-            this.queue.push( { call:call, callback:callback, params:params } );
+            this.queue.push( { call:call, callback:callbackF, params:params } );
             return;
         }
         if(this.queue.length > 0){
@@ -47,19 +48,22 @@
             this.sendMessage(msgParams.call, msgParams.callback, msgParams.params);
         }
         console.log("call:"+call+" host:"+this.host);
-		if(callback){ 
+		if(callbackF){ 
 			var id = Math.floor(Math.random()*100000+(new Date().getTime()));
-			window.addEventListener('message', function(e){
-				e.data.id === id && callback.call(this,e);
-			}, false);
+			
 		}
-		var data = {'call': call,'id':id};
+		var data = {'call': call,'id':id, callbackId:call + "-" + id };
+        
+        this.requests[data.callbackId] = callbackF;
+        
 		if(params) data.params = params;        
 		this.iFrame.contentWindow.postMessage(JSON.stringify(data), this.host);
 	};
-    ArcClient.prototype.receiveMessage = function(message){
-        if (event.origin !== this.host)  
-            return;            
+    ArcClient.prototype.receiveMessage = function(event){
+        if (event.origin !== this.host) { return; }
+            
+        this.requests[event.data.callbackId]();  
+        
     };
     
 	window.ArcClient = ArcClient;
