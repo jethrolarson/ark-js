@@ -5,16 +5,17 @@
 	var ArcClient = function(url){
 		
 		var self = this;
+		
 		this.queue = [];
-        this.requests = new Object();
+        this.requests = {};
+		
 		this.iFrame = document.createElement('iframe');
 		this.iFrame.src = url;
+		this.iFrame.style.cssText = 'visibility: hidden; left:-999999px; position: absolute;';
         this.frameLoaded = false;
 
 		//hide the iFrame
-		this.iFrame.style.visibility = 'hidden';
-		this.iFrame.style.left = '-999999px';
-		this.iFrame.style.position = 'absolute';
+		
 
 		//put the iFrame in the document
 		document.body.appendChild(this.iFrame);
