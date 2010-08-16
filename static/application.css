@@ -315,7 +315,7 @@ html, body {
 
 #page {
   background: #fff;
-  height: 100%;
+  min-height: 100%;
   width: 900px;
   margin: 0 auto;
   padding: 12px; }
