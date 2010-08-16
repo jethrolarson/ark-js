@@ -12,25 +12,35 @@
 			</header>
 			<div id="body">
 				<div id="content">
+					<a href="http://github.com/jethrolarson/arc-js">On Github</a>
 					<ul>
 						<li><a href="/static/sites/adexample/client.html">Relevant Ads Example</a></li>
 						<li><a href="/static/tests/xhr_client.html">XHR Example</a></li>
 					</ul>
 					
 					<h2>Client Example</h2>
-					<pre><code>new ArcClient("index.html").sendMessage('subscribePosts', {}, function(data){
+					<p>On the page that wants to use the API</p>
+<pre><code>new ArcClient("index.html").sendMessage('subscribePosts', {}, function(data){
   $("#tweets").append("&lt;li&gt;"+data.message+"&lt;/li&gt;");
 });</code></pre>
 					<h2>"Server" Example</h2>
+					<p>On the page that wants to provide the API</p>
 <pre><code>new ArcServer({
   'subscribePosts':{
     onMessage: function(e){
-      var posts = [],
-      self = this;
       self.sendMessage(e,$('.update:first').html());
     }
   }
 });</code></pre>
+					<h2>Remote Media player</h2>
+					<ul>
+						<li> type 'pp' to play or pause</li>
+						<li> type 'rr' to skip backward</li>
+						<li> type 'ff' to skip forward</li>
+					</ul>
+					<h2>fauxtweet</h2>
+					<p>Simulated real time 'tweets' are being pushed from a hidden iframe to the sidebar</p>
+					<hr/>
 				</div>
 				<div id="sidebar">
 					<aside id="tweetStream">
@@ -44,14 +54,15 @@
 			<footer>
 				<address>
 					Created for gtug campout 2010 by 
-					Dan Buchner,
+					<a href="http://jsaces.com">Dan Buchner</a>,
 					<a href="http://twitter.com/bradonweb">Brad Boswell</a>,
 					<a href="http://jethrolarson.github.com">Jethro Larson</a>,
-					Arron Schaar
+					<a href="http://jsaces.com">Arron Schaar</a>
 				</address>
 			</footer>
 		</div>
 	</body>
+	<script>localStorage.clear();</script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	<script src="/static/js/arc_client.js"></script>
 	<script src="/static/js/jquery.gritter.min.js"></script>

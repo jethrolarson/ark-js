@@ -1,5 +1,0 @@
-1. Client fires message "yo" to server every iframe load
-
-1. Server adds event listener on load
-2. On first message saves window reference to client
-3. On "yo" server checks localStorage for any pending messages that target the client and sends those messages.
