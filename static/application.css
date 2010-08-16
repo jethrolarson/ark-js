@@ -318,7 +318,7 @@ input[type='button'], input[type='submit'], button, .button {
       background: #eeeeee -moz-gradient(top, #eeeeee, #aaaaaa); }
     #sidebar aside ul {
       overflow: auto;
-      height: 300px; }
+      max-height: 300px; }
 
 #content {
   width: 600px;

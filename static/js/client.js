@@ -48,5 +48,4 @@ $(function(){
 			prevKey = -1;
 		}
 	});
-
 });
