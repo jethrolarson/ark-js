@@ -309,16 +309,31 @@ input[type='button'], input[type='submit'], button, .button {
     font-size: 20px;
     padding: 6px 20px; }
 
+html, body {
+  height: 100%;
+  background: #ddd; }
+
+#page {
+  background: #fff;
+  height: 100%;
+  width: 900px;
+  margin: 0 auto;
+  padding: 12px; }
+
 #sidebar {
   width: 280px;
-  float: left; }
+  float: right; }
   #sidebar aside {
     border: 1px solid #b4b4b4; }
-    #sidebar aside header {
-      background: #eeeeee -moz-gradient(top, #eeeeee, #aaaaaa); }
+    #sidebar aside h2 {
+      padding: 2px 12px;
+      background: #eeeeee -moz-linear-gradient(top, #f1f1f1, #cccccc); }
     #sidebar aside ul {
+      padding: 0 12px;
       overflow: auto;
       max-height: 300px; }
+      #sidebar aside ul li {
+        padding: 2px 0; }
 
 #content {
   width: 600px;

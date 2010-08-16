@@ -70,8 +70,8 @@ $(function(){
 				self = this;
 				$(function(){
 					$('body').bind('play', function(){
-						console.log('Got a play event')
-						console.log('Sending '+$('#playlist li')[trackIndex].textContent)
+						//console.log('Got a play event')
+						//console.log('Sending '+$('#playlist li')[trackIndex].textContent)
 						self.sendMessage(e, 'Playing: '+$('#playlist li')[trackIndex].textContent);
 					});
 				});

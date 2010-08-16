@@ -35,12 +35,12 @@ $(function(){
 		});
 
 		function addAction(data) {
-			if(data.message !== 'Fastforwarding' && data.message !== 'Rewinding'){
+			if(data.message!="" && data.message !== 'Fastforwarding' && data.message !== 'Rewinding'){
 				$.gritter.add({
 					// (string | mandatory) the heading of the notification
 					title: "Fodora",
 					// (string | mandatory) the text inside the notification
-					text: data.message
+					text: data.message || ""
 				});
 			}
 		}

@@ -16,6 +16,21 @@
 						<li><a href="/static/sites/adexample/client.html">Relevant Ads Example</a></li>
 						<li><a href="/static/tests/xhr_client.html">XHR Example</a></li>
 					</ul>
+					
+					<h2>Client Example</h2>
+					<pre><code>new ArcClient("index.html").sendMessage('subscribePosts', {}, function(data){
+  $("#tweets").append("&lt;li&gt;"+data.message+"&lt;/li&gt;");
+});</code></pre>
+					<h2>"Server" Example</h2>
+<pre><code>new ArcServer({
+  'subscribePosts':{
+    onMessage: function(e){
+      var posts = [],
+      self = this;
+      self.sendMessage(e,$('.update:first').html());
+    }
+  }
+});</code></pre>
 				</div>
 				<div id="sidebar">
 					<aside id="tweetStream">
@@ -23,11 +38,6 @@
 						<nav>
 							<ul id="tweets"></ul>
 						</nav>
-					</aside>
-					<aside id="adWords">
-						<h2>fAd words</h2>
-						<div id="adContent">
-						<button id="nextAd">Next</button>
 					</aside>
 				</div>
 			</div>
@@ -42,8 +52,7 @@
 			</footer>
 		</div>
 	</body>
-	<script src="http://www.google.com/jsapi"></script>
-	<script> google.load('jquery','1'); </script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	<script src="/static/js/arc_client.js"></script>
 	<script src="/static/js/jquery.gritter.min.js"></script>
 	<script src="/static/js/client.js"></script>

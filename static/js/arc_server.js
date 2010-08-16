@@ -31,7 +31,7 @@
 		this.callbackId = undefined;
 		this.policies = assembleLibrary(policies || {});
 		window.addEventListener('message', function(e){
-			console.log('added event listner')
+			//console.log('added event listner')
 			var data = JSON.parse(e.data);
 			if(self.source === undefined){  //if client window isn't stored store it
 				self.source = e.source;

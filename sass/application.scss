@@ -4,17 +4,28 @@
 @import url(_reset.scss);
 @import url(_typo.scss);
 
+html,body{
+	height: 100%; background: #ddd}
+#page{
+	background: #fff;
+	height: 100%; 
+	width: 900px; margin: 0 auto;
+	padding: $normal}
+
 #sidebar{
 	width: 280px; 
-	float: left;
+	float: right;
 	aside{
 		border: 1px solid $bc_default;
-		header{
-			background: #eee -moz-gradient(top, #eee, #aaa);
+		h2{
+			padding: 2px $normal;
+			background: #eee -moz-linear-gradient(top, #f1f1f1, #ccc);
 		}
 		ul{
+			padding: 0 $normal;
 			overflow: auto;
 			max-height: 300px;
+			li{padding: 2px 0;}
 		}
 	}
 	
